@@ -15,16 +15,25 @@ from brmed.settings import BASE_URL_ENDPOINT_VAT, BASE_COTATION
 class CotacaoService():
 
     def seed_initial(self):
+        """
+        A service seed database with 5 latest response of VAT ENDPOINT 
+
+            Args:   \n
+                - : None
+
+            Returns:  \n  
+                message: sucess message or error
+        """
          
         client = coreapi.Client()
-        now = datetime.datetime.today()
         date_validation = []
         limit = 0
         day_cont = 0
+        message = "Importação realizada!"
 
         while (limit <= 4):
 
-            date = now - datetime.timedelta(days=day_cont)
+            date = datetime.datetime.today() - datetime.timedelta(days=day_cont)
             date_str = date.strftime("%Y-%m-%d")
             data_dict = {}
 
@@ -52,4 +61,4 @@ class CotacaoService():
             
             day_cont = day_cont + 1
             
-        return "OK"
+        return message

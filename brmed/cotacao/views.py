@@ -2,18 +2,15 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response 
 from cotacao.services import CotacaoService
+from rest_framework.decorators import api_view
 
 class CotacaoView(APIView):
 
-    def get(self, request):
+    @api_view(['GET'])
+    def seed_dabase(self):
         """
-            A View for get data in VT and put in database local
-            Args: \n
-                request: Http request
-            
-            Returns: \n
-            
+            A View for get data in VAT endpoint and put in database local
         """
         cotacao_service = CotacaoService()
-        cotacoes = cotacao_service.seed_initial()
-        return Response(cotacoes)
+        message = cotacao_service.seed_initial()
+        return Response(message)
