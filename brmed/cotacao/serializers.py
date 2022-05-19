@@ -5,4 +5,5 @@ class CotacaoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cotacao
-        fields = ('id', 'real', 'euro', 'iene')
+        fields = ('id', 'real', 'euro', 'iene','date')
+

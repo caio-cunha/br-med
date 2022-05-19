@@ -4,7 +4,7 @@ from datetime import datetime
 
 class Cotacao(TimeStampedModel):
 
-    real = models.DecimalField(max_digits=20, decimal_places=15)
-    euro = models.DecimalField(max_digits=20, decimal_places=15)
-    iene = models.DecimalField(max_digits=20, decimal_places=15)
-    date = models.DateField(default=datetime.now)
+    real = models.FloatField(null=True, blank=True)
+    euro = models.FloatField(null=True, blank=True)
+    iene = models.FloatField(null=True, blank=True)
+    date = models.DateField(default=datetime.now, null=False, unique=True, error_messages={'unique':"Cotações já importadas!"})
