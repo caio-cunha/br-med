@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Gráfico Cotações</title>
+</head>
+<body>
+
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+
+    <div class="container mt-5">
+
+        <!-- Card -->
+        <div class="card" style="width: 52rem;">
+    
+          <hr class="my-0">
+    
+          <div class="card-body">
+            <div id="container"></div>
+          </div>
+    
+        </div>
+        <!-- Card -->
+    
+      </div>
+    
+    <script>
+    _dates = {{dates|safe}};
+    _datareal = {{real|safe}}; 
+    _dataeuro = {{euro|safe}}; 
+    _dataiene = {{iene|safe}}; 
+
+    Highcharts.chart('container', {
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Cotações em Relação ao Dólar USD'
+        },
+        xAxis: {
+            categories: _dates
+        },
+        yAxis:[{
+            labels: {
+                style: {
+                    color: Highcharts.getOptions().colors[2]
+                }
+            },
+            title: {
+                text: 'Iene (JPY)',
+                style: {
+                    color: Highcharts.getOptions().colors[2]
+                }
+            },
+            opposite: true
+        },
+        {
+            labels: {
+                style: {
+                    color: Highcharts.getOptions().colors[0]
+                }
+            },
+            title: {
+                text: 'Real (BRL)',
+                style: {
+                    color: Highcharts.getOptions().colors[0]
+                }
+            },
+        },
+        {
+            labels: {
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            },
+            title: {
+                text: 'Euro (EUR)',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            },
+            opposite: true
+        }],
+        legend: {
+            layout: 'vertical',
+            align: 'left',
+            x: 80,
+            verticalAlign: 'top',
+            y: 55,
+            floating: true,
+            backgroundColor:
+                Highcharts.defaultOptions.legend.backgroundColor || // theme
+                'rgba(255,255,255,0.25)'
+        },
+        series: [{
+            name: 'Real (BRL)',
+            data: _datareal,
+            yAxis: 1
+        },{
+            name: 'Euro (EUR)',
+            data: _dataeuro,
+            yAxis: 2
+        },{
+            name: 'Iene (JPY)',
+            data: _dataiene,
+        }]
+    });
+  </script>
+</body>
+</html>

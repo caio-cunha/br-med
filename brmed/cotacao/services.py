@@ -7,6 +7,7 @@ Here it is concentrated as business rules
 """
 import coreapi
 import datetime 
+import json
 from cotacao.models import Cotacao
 from cotacao.serializers import CotacaoSerializer
 from requests.exceptions import ConnectionError
@@ -62,3 +63,35 @@ class CotacaoService():
             day_cont = day_cont + 1
             
         return message
+
+    def get_data_initial_chart(self):
+        """
+        A service to plot chart with 5 latest cotations
+
+            Args:   \n
+                - : None
+
+            Returns:  \n  
+                data : data with 5 latest cotations
+        """
+        dates = []
+        data_real = []
+        data_euro = []
+        data_iene = []
+
+        datas = Cotacao.objects.all()
+
+        if not datas:
+            raise 
+        
+
+        for data in datas:
+
+            date_str = data.date.strftime("%Y-%m-%d")
+            dates.append(date_str)
+            data_real.append(data.real)
+            data_euro.append(data.euro)
+            data_iene.append(data.iene)
+
+        return dates, data_real, data_euro, data_iene
+
