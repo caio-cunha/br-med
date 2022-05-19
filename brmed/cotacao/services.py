@@ -11,6 +11,7 @@ from cotacao.models import Cotacao
 from cotacao.serializers import CotacaoSerializer
 from requests.exceptions import ConnectionError
 from brmed.settings import BASE_URL_ENDPOINT_VAT, BASE_COTATION
+from cotacao.exceptions import DataNotFound
 
 class CotacaoService():
 
@@ -62,3 +63,35 @@ class CotacaoService():
             day_cont = day_cont + 1
             
         return message
+
+    def get_data_initial_chart(self):
+        """
+        A service to plot chart with 5 latest cotations
+
+            Args:   \n
+                - : None
+
+            Returns:  \n  
+                data : data with 5 latest cotations
+        """
+        dates = []
+        data_real = []
+        data_euro = []
+        data_iene = []
+
+        ## get last 5 items of cotacao in database
+        datas = Cotacao.objects.all().order_by('-date')[:5][::-1]
+
+        if not datas:
+            raise DataNotFound
+        
+        for data in datas:
+
+            date_str = data.date.strftime("%Y-%m-%d")
+            dates.append(date_str)
+            data_real.append(data.real)
+            data_euro.append(data.euro)
+            data_iene.append(data.iene)
+
+        return dates, data_real, data_euro, data_iene
+
