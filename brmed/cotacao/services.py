@@ -7,11 +7,11 @@ Here it is concentrated as business rules
 """
 import coreapi
 import datetime 
-import json
 from cotacao.models import Cotacao
 from cotacao.serializers import CotacaoSerializer
 from requests.exceptions import ConnectionError
 from brmed.settings import BASE_URL_ENDPOINT_VAT, BASE_COTATION
+from cotacao.exceptions import DataNotFound
 
 class CotacaoService():
 
@@ -79,12 +79,12 @@ class CotacaoService():
         data_euro = []
         data_iene = []
 
-        datas = Cotacao.objects.all()
+        ## get last 5 items of cotacao in database
+        datas = Cotacao.objects.all().order_by('-date')[:5][::-1]
 
         if not datas:
-            raise 
+            raise DataNotFound
         
-
         for data in datas:
 
             date_str = data.date.strftime("%Y-%m-%d")
