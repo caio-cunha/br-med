@@ -104,30 +104,37 @@ class CotacaoService():
 
     def get_data_date_chart(self, date_inicial, date_final):
         """
-        A service to get data with range Date 
+        A service to get and organize data from database, using date selected by user
 
             Args:   \n
                 date_inicial : Date Initial for generate chart
                 date_final: Date Final for generate chart
 
             Returns:  \n  
-                data : data with 5 latest cotations
+                datas_final : data of cotations and errors
         """
-        dates = []
-        data_real = []
-        data_euro = []
-        data_iene = []
         
+        datas_final = {'dates': [], 'real': [], 'euro': [], 'iene': [], 'errors': ''}
+
+        diferenca = date_final - date_inicial
+        if diferenca.days > 5:
+            datas_final['errors'] = "Selecione um intervalo de no máximo 5 dias!"
+            return datas_final
+
+        if date_inicial > date_final:
+            datas_final['errors'] = "Selecione uma Data Inicial menor que a Data Final!"
+            return datas_final
+
         ## get records with date range selected
         datas = Cotacao.objects.filter(date__range=[date_inicial, date_final])
         
         for data in datas:
 
             date_str = data.date.strftime("%Y-%m-%d")
-            dates.append(date_str)
-            data_real.append(data.real)
-            data_euro.append(data.euro)
-            data_iene.append(data.iene)
+            datas_final['dates'].append(date_str)
+            datas_final['real'].append(data.real)
+            datas_final['euro'].append(data.euro)
+            datas_final['iene'].append(data.iene)
 
-        return dates, data_real, data_euro, data_iene
+        return datas_final
 

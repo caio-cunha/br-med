@@ -1,4 +1,4 @@
-from sqlite3 import Date
+from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response 
 from cotacao.services import CotacaoService
@@ -21,7 +21,7 @@ class CotacaoView(APIView):
     @renderer_classes([TemplateHTMLRenderer])
     def initial_chart(self):
         """
-            A View for get and send data, for to plot last 5 cotation in relation USD
+            A View for get and send data
         """
         cotacao_service = CotacaoService()
         datas_final = cotacao_service.get_data_initial_chart()
@@ -30,19 +30,32 @@ class CotacaoView(APIView):
             'real': datas_final['real'],
             'euro': datas_final['euro'],
             'iene': datas_final['iene'],
-            'errors':datas_final['errors']
+            'errors': datas_final['errors']
         }
         return Response(context, template_name='index.html')
 
     @api_view(['POST'])
     @renderer_classes([TemplateHTMLRenderer])
     def date_chart(request):
+        """
+            A View for get and send data
+        """
         if request.method == "POST":
             form = DateForm(request.POST)
             if form.is_valid():
                 date_initial = form.cleaned_data['date_initial']
                 date_final = form.cleaned_data['date_final']
                 cotacao_service = CotacaoService()
-                dates, data_real, data_euro, data_iene = cotacao_service.get_data_date_chart(date_initial, date_final)
-                context = {'dates': dates, 'real': data_real, 'euro': data_euro, 'iene': data_iene}
-        return Response(context,template_name='index.html')
+                datas_final = cotacao_service.get_data_date_chart(date_initial, date_final)
+                context = {
+                    'dates': datas_final['dates'],
+                    'real': datas_final['real'],
+                    'euro': datas_final['euro'],
+                    'iene': datas_final['iene'],
+                    'errors': datas_final['errors']
+                }
+                return render(request, 'index.html', context)
+            else:
+                context = {'dates': [], 'real': [], 'euro': [], 'iene': [], 'errors': "Selecione as Datas!"}
+                return render(request, 'index.html', context)
+                
