@@ -65,38 +65,36 @@ class CotacaoService():
 
     def get_data_initial_chart(self):
         """
-        A service to get data for 5 latest cotations
+        A service to get and organize data from database, getting the last 5 cotations in relation USD
 
             Args:   \n
                 - : None
 
             Returns:  \n  
                 dates : dates of plot
-                data_real: data real cotation \n 
-                data_euro: data euro cotation \n 
-                data_iene: data iene cotation \n 
+                real: real cotation \n 
+                euro: euro cotation \n 
+                iene: iene cotation \n 
 
         """
-        dates = []
-        data_real = []
-        data_euro = []
-        data_iene = []
+        datas_final = {'dates': [], 'real': [], 'euro': [], 'iene': [], 'errors': ''}
 
-        ## get last 5 records of cotacao in database
+        ## getting last 5 records of cotacao in database
         datas = Cotacao.objects.all().order_by('-date')[:5][::-1]
 
-        #if not datas:
-        #    raise DataNotFound
+        if not datas:
+            datas_final['errors'] = "Nenhum dado encontrado no BANCO DE DADOS!"
+            return datas_final
         
         for data in datas:
 
             date_str = data.date.strftime("%Y-%m-%d")
-            dates.append(date_str)
-            data_real.append(data.real)
-            data_euro.append(data.euro)
-            data_iene.append(data.iene)
+            datas_final['dates'].append(date_str)
+            datas_final['real'].append(data.real)
+            datas_final['euro'].append(data.euro)
+            datas_final['iene'].append(data.iene)
 
-        return dates, data_real, data_euro, data_iene
+        return datas_final 
 
     def get_data_date_chart(self, date_inicial, date_final):
         """
