@@ -20,11 +20,12 @@
             <input type="date" id="date_final" name="date_final">
         </div>
         </br>
-        {% if errors %}
-            <span style="color:red">{{errors}}</span> </form></body></br>
-        {% endif %}
         <button type='submit'>Gerar</button>
-        </form>
+    </form>
+    {% if errors %}
+        </br>
+        <span style="color:red">{{errors}}</span> </form></body></br>
+    {% endif %}
     </center>
     </div>
     
