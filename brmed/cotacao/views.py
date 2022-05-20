@@ -20,9 +20,18 @@ class CotacaoView(APIView):
     @api_view(['GET'])
     @renderer_classes([TemplateHTMLRenderer])
     def initial_chart(self):
+        """
+            A View for get and send data, for to plot last 5 cotation in relation USD
+        """
         cotacao_service = CotacaoService()
-        dates, data_real, data_euro, data_iene = cotacao_service.get_data_initial_chart()
-        context = {'dates': dates, 'real': data_real, 'euro': data_euro, 'iene': data_iene}
+        datas_final = cotacao_service.get_data_initial_chart()
+        context = {
+            'dates': datas_final['dates'],
+            'real': datas_final['real'],
+            'euro': datas_final['euro'],
+            'iene': datas_final['iene'],
+            'errors':datas_final['errors']
+        }
         return Response(context, template_name='index.html')
 
     @api_view(['POST'])
