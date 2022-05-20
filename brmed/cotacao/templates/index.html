@@ -1,28 +1,35 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Gráfico Cotações</title>
+    <meta charset="utf-8">
+    <title>Gráfico Cotações</title>
 </head>
 <body>
-
-    <script src="https://code.highcharts.com/highcharts.src.js"></script>
-
-    <div class="container mt-5">
-
-        <!-- Card -->
-        <div class="card" style="width: 52rem;">
-    
-          <hr class="my-0">
-    
-          <div class="card-body">
-            <div id="container"></div>
-          </div>
-    
+    </br>
+     <!-- Field for get Date -->
+    <form action="{% url 'date_chart' %}" method="POST">
+         {% csrf_token %}
+         {{ form.as_p }}
+        <div class="row">
+            <label>Escolha uma data Inicial:</label>
+            <input type="date" id="date_initial" name="date_initial">
         </div>
-        <!-- Card -->
+        </br>
+        <div class="row">
+            <label>Escolha uma data Final:</label>
+            <input type="date" id="date_final" name="date_final">
+        </div>
+        </br>
+        <button type='submit'>Gerar</button>
+        </form>
+    </center>
+    </div>
     
-      </div>
+    <!-- Chart usihg HighCharts Lib -->
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    </br>
+    <hr>
+    <div id="container"></div>
     
     <script>
     _dates = {{dates|safe}};

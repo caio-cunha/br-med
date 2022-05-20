@@ -11,7 +11,6 @@ from cotacao.models import Cotacao
 from cotacao.serializers import CotacaoSerializer
 from requests.exceptions import ConnectionError
 from brmed.settings import BASE_URL_ENDPOINT_VAT, BASE_COTATION
-from cotacao.exceptions import DataNotFound
 
 class CotacaoService():
 
@@ -66,10 +65,46 @@ class CotacaoService():
 
     def get_data_initial_chart(self):
         """
-        A service to plot chart with 5 latest cotations
+        A service to get data for 5 latest cotations
 
             Args:   \n
                 - : None
+
+            Returns:  \n  
+                dates : dates of plot
+                data_real: data real cotation \n 
+                data_euro: data euro cotation \n 
+                data_iene: data iene cotation \n 
+
+        """
+        dates = []
+        data_real = []
+        data_euro = []
+        data_iene = []
+
+        ## get last 5 records of cotacao in database
+        datas = Cotacao.objects.all().order_by('-date')[:5][::-1]
+
+        #if not datas:
+        #    raise DataNotFound
+        
+        for data in datas:
+
+            date_str = data.date.strftime("%Y-%m-%d")
+            dates.append(date_str)
+            data_real.append(data.real)
+            data_euro.append(data.euro)
+            data_iene.append(data.iene)
+
+        return dates, data_real, data_euro, data_iene
+
+    def get_data_date_chart(self, date_inicial, date_final):
+        """
+        A service to get data with range Date 
+
+            Args:   \n
+                date_inicial : Date Initial for generate chart
+                date_final: Date Final for generate chart
 
             Returns:  \n  
                 data : data with 5 latest cotations
@@ -78,12 +113,9 @@ class CotacaoService():
         data_real = []
         data_euro = []
         data_iene = []
-
-        ## get last 5 items of cotacao in database
-        datas = Cotacao.objects.all().order_by('-date')[:5][::-1]
-
-        if not datas:
-            raise DataNotFound
+        
+        ## get records with date range selected
+        datas = Cotacao.objects.filter(date__range=[date_inicial, date_final])
         
         for data in datas:
 
