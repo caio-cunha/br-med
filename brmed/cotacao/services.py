@@ -14,6 +14,47 @@ from brmed.settings import BASE_URL_ENDPOINT_VAT, BASE_COTATION
 
 class CotacaoService():
 
+    def _get_save_data_api(self, date):
+
+        client = coreapi.Client()
+        data_dict = {}
+
+        date_str = date.strftime("%Y-%m-%d")
+
+        filter = Cotacao.objects.filter(date=date_str)
+
+        if not filter:
+
+            data_dict = {'date': ''}
+
+            try:
+
+                data = client.get(BASE_URL_ENDPOINT_VAT + '?base=' + BASE_COTATION + '&date=' + date_str)
+
+            except ConnectionError as e:
+
+                raise e
+
+            if data["date"] == date_str:
+
+                try:
+
+                    data_dict["real"] = data["rates"]["BRL"]
+                    data_dict["euro"] = data["rates"]["EUR"]
+                    data_dict["iene"] = data["rates"]["JPY"]
+                    data_dict["date"] = data["date"]
+
+                except KeyError as exp:
+
+                    raise exp
+
+                cotacao_serializer = CotacaoSerializer(data=data_dict)
+                cotacao_serializer.is_valid(raise_exception=True)
+                cotacao_serializer.save()
+
+            return data_dict
+
+    
     def seed_initial(self):
         """
         A service seed database with 5 latest response of VAT ENDPOINT 
@@ -24,44 +65,27 @@ class CotacaoService():
             Returns:  \n  
                 message: sucess message or error
         """
-         
-        client = coreapi.Client()
         date_validation = []
         limit = 0
         day_cont = 0
-        message = "Importação realizada!"
-
+        
         while (limit <= 4):
 
             date = datetime.datetime.today() - datetime.timedelta(days=day_cont)
-            date_str = date.strftime("%Y-%m-%d")
-            data_dict = {}
 
-            try:
-                data = client.get(BASE_URL_ENDPOINT_VAT + '?base=' + BASE_COTATION + '&date=' + date_str)
-            except ConnectionError as e:
-                raise e
+            data = self._get_save_data_api(date)
 
-            try:
-                data_dict["real"] = data["rates"]["BRL"]
-                data_dict["euro"] = data["rates"]["EUR"]
-                data_dict["iene"] = data["rates"]["JPY"]
-                data_dict["date"] = data["date"]
-            except KeyError as exp:
-                raise exp
-            
-            if data_dict["date"] not in date_validation:
+            if data["date"] not in date_validation:
 
-                cotacao_serializer = CotacaoSerializer(data=data_dict)
-                cotacao_serializer.is_valid(raise_exception=True)
-                cotacao_serializer.save()
-                
-                date_validation.append(data_dict["date"])
+                date_validation.append(data["date"])
                 limit = limit + 1
-            
+
             day_cont = day_cont + 1
-            
-        return message
+
+        data = self._get_save_data_api(date)
+
+        return data
+        
 
     def get_data_initial_chart(self):
         """
@@ -71,10 +95,7 @@ class CotacaoService():
                 - : None
 
             Returns:  \n  
-                dates : dates of plot
-                real: real cotation \n 
-                euro: euro cotation \n 
-                iene: iene cotation \n 
+                datas_final : data of cotations and errors 
 
         """
         datas_final = {'dates': [], 'real': [], 'euro': [], 'iene': [], 'errors': ''}
@@ -125,8 +146,17 @@ class CotacaoService():
             datas_final['errors'] = "Selecione uma Data Inicial menor que a Data Final!"
             return datas_final
 
+        for i in range(0,5):
+
+            date = date_final - datetime.timedelta(days=i)
+            data = self._get_save_data_api(date)
+
         ## get records with date range selected
         datas = Cotacao.objects.filter(date__range=[date_inicial, date_final])
+
+        if not datas:
+            datas_final['errors'] = "Não há dados para a data selecionada!"
+            return datas_final
         
         for data in datas:
 
