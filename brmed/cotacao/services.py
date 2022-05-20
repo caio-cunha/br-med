@@ -79,8 +79,14 @@ class CotacaoService():
         """
         datas_final = {'dates': [], 'real': [], 'euro': [], 'iene': [], 'errors': ''}
 
-        ## getting last 5 records of cotacao in database
-        datas = Cotacao.objects.all().order_by('-date')[:5][::-1]
+        date_inicial = datetime.datetime.today() - datetime.timedelta(days=4)
+        date_inicial_str = date_inicial.strftime("%Y-%m-%d")
+
+        date_final = datetime.datetime.today()
+        date_final_str = date_final.strftime("%Y-%m-%d")
+
+        ## get records with date range selected
+        datas = Cotacao.objects.filter(date__range=[date_inicial_str, date_final_str])
 
         if not datas:
             datas_final['errors'] = "Nenhum dado encontrado no BANCO DE DADOS!"
