@@ -60,7 +60,7 @@ class CotacaoTest(TestCase):
     def test_not_found_chart_date(self):
         """
         POST /apis/cotacao/chart/date:
-        404 Not Found ERROR - Exception Test
+        405 Method not Allow - Exception Test
         """
 
         # -------------------------------------------
@@ -80,7 +80,7 @@ class CotacaoTest(TestCase):
     def test_not_allow_method_seed(self):
         """
         GET /apis/cotacao/seed:
-        404 Not Found ERROR - Exception Test
+        405 Method not Allow - Exception Test
         """
 
         # -------------------------------------------
@@ -89,6 +89,26 @@ class CotacaoTest(TestCase):
 
         # -------------------------------------------
         # Simulate a http call to the /apis/cotacao/seed endpoint
+        response = self.client.post(
+            request_url
+        )
+
+        # -------------------------------------------
+        # Evaluates the status code response
+        AssertThat(response.status_code).IsEqualTo(405)
+
+    def test_not_allow_method_chart_initial(self):
+        """
+        GET /apis/cotacao/chart:
+        405 Method not Allow ERROR - Exception Test
+        """
+
+        # -------------------------------------------
+        # Create the request
+        request_url = "/apis/cotacao/chart"
+
+        # -------------------------------------------
+        # Simulate a http call to the /apis/cotacao/chart endpoint
         response = self.client.post(
             request_url
         )
