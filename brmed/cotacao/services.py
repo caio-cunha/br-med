@@ -188,3 +188,21 @@ class CotacaoService():
 
         return datas_final
 
+    def get_all(self):
+        """
+        A service to get all cotation saved in database
+
+            Args:   \n
+                - : None
+
+            Returns:  \n  
+                cotacao : data of all cotations
+        """
+
+        ## Note: As the amount of data available in the database will be small, this query would not be costly..
+        ## Note02: In a scenario where the quote table grows a lot, some strategy is needed to make this query
+        ## Note03: Pagination for example, limiting the amount of searches in the bank.
+        cotacao = Cotacao.objects.all()
+        
+        return cotacao
+

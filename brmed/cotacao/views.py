@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.response import Response 
+from rest_framework.response import Response
+from cotacao.serializers import CotacaoSerializer 
 from cotacao.services import CotacaoService
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -58,4 +59,13 @@ class CotacaoView(APIView):
             else:
                 context = {'dates': [], 'real': [], 'euro': [], 'iene': [], 'errors': "Selecione as Datas!"}
                 return render(request, 'index.html', context)
-                
+    
+    @api_view(['GET'])
+    def get_all_cotations(self):
+        """
+            A View for get all cotations saved in database
+        """
+        cotacao_service = CotacaoService()
+        data = cotacao_service.get_all()     
+        cotacao_serializer = CotacaoSerializer(data, many=True)   
+        return Response(cotacao_serializer.data)            
