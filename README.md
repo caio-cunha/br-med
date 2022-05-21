@@ -27,3 +27,13 @@ API endpoints desenvolvidos:
  ```
  python3 -m pip install -r requirements.txt
  ```
+ 
+**5. Testar a aplicação (entrar na pasta do app principal -brmed):**
+ ```
+ python3 manage.py runserver
+ ```
+ 
+**6. Executar os testes:**
+ ```
+ python3 manage.py test
+ ```
