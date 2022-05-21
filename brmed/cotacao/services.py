@@ -15,6 +15,15 @@ from brmed.settings import BASE_URL_ENDPOINT_VAT, BASE_COTATION
 class CotacaoService():
 
     def _get_save_data_api(self, date):
+        """
+        A service to seed database with 5 response of VAT ENDPOINT 
+
+            Args:   \n
+                date : Date for search in VAT API
+
+            Returns:  \n  
+                data_dict: data of getted in VAT API or message error
+        """
 
         client = coreapi.Client()
 
@@ -67,7 +76,7 @@ class CotacaoService():
     
     def seed_initial(self):
         """
-        A service seed database with 5 latest response of VAT ENDPOINT 
+        A service seed database with 5 response of VAT ENDPOINT 
 
             Args:   \n
                 - : None
