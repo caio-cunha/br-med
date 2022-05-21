@@ -36,3 +36,23 @@ class CotacaoTest(TestCase):
         # -------------------------------------------
         # Evaluates the status code response
         AssertThat(response.status_code).IsEqualTo(404)
+
+    def test_not_found_chart(self):
+        """
+        GET /apis/cotacao/chart:
+        404 Not Found ERROR - Exception Test
+        """
+
+        # -------------------------------------------
+        # Create the request url WRONG
+        request_url = "/apis/cotacao/chart/"
+
+        # -------------------------------------------
+        # Simulate a http call to the /apis/cotacao/chart endpoint
+        response = self.client.get(
+            request_url
+        )
+
+        # -------------------------------------------
+        # Evaluates the status code response
+        AssertThat(response.status_code).IsEqualTo(404)
