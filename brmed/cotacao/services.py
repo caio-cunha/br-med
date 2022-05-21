@@ -17,15 +17,12 @@ class CotacaoService():
     def _get_save_data_api(self, date):
 
         client = coreapi.Client()
-        data_dict = {}
 
         date_str = date.strftime("%Y-%m-%d")
 
         filter = Cotacao.objects.filter(date=date_str)
 
         if not filter:
-
-            data_dict = {'date': ''}
 
             try:
 
@@ -34,6 +31,8 @@ class CotacaoService():
             except ConnectionError as e:
 
                 raise e
+            
+            data_dict = {}
 
             if data["date"] == date_str:
 
@@ -43,6 +42,7 @@ class CotacaoService():
                     data_dict["euro"] = data["rates"]["EUR"]
                     data_dict["iene"] = data["rates"]["JPY"]
                     data_dict["date"] = data["date"]
+                    data_dict["message"] = "Dados Importados!"
 
                 except KeyError as exp:
 
@@ -51,8 +51,18 @@ class CotacaoService():
                 cotacao_serializer = CotacaoSerializer(data=data_dict)
                 cotacao_serializer.is_valid(raise_exception=True)
                 cotacao_serializer.save()
+             
+                return data_dict
+            
+            else:
+                
+                data_dict = {'date': '', 'message': "Dados não importados! VAT API não retornou para essa data."}
 
-            return data_dict
+        else:
+            
+            data_dict = {'date': '', 'message': "Dados não importados! O registro já está salvo."}
+
+        return data_dict
 
     
     def seed_initial(self):
@@ -66,6 +76,7 @@ class CotacaoService():
                 message: sucess message or error
         """
         date_validation = []
+        message = []
         limit = 0
         day_cont = 0
         
@@ -74,17 +85,17 @@ class CotacaoService():
             date = datetime.datetime.today() - datetime.timedelta(days=day_cont)
 
             data = self._get_save_data_api(date)
-
-            if data["date"] not in date_validation:
+            
+            if data["date"] not in date_validation and data["date"] != '':
 
                 date_validation.append(data["date"])
                 limit = limit + 1
 
+            date_str = date.strftime("%Y-%m-%d")
+            message.append(date_str + ': ' + data["message"])
             day_cont = day_cont + 1
 
-        data = self._get_save_data_api(date)
-
-        return data
+        return message  
         
 
     def get_data_initial_chart(self):

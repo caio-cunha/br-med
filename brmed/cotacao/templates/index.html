@@ -11,20 +11,21 @@
          {% csrf_token %}
          {{ form.as_p }}
         <div class="row">
-            <label>Escolha uma data Inicial:</label>
+            <label>Data Inicial:</label>
             <input type="date" id="date_initial" name="date_initial">
         </div>
         </br>
         <div class="row">
-            <label>Escolha uma data Final:</label>
-            <input type="date" id="date_final" name="date_final">
+            <label>Data Final:</label>
+            &nbsp;&nbsp;<input type="date" id="date_final" name="date_final">
         </div>
         </br>
         <button type='submit'>Gerar</button>
     </form>
     {% if errors %}
         </br>
-        <span style="color:red">{{errors}}</span> </form></body></br>
+        <span style="color:red">{{errors}}</span> </form></body></br></br>
+        <a href="{% url 'initial_chart' %}" >Voltar</a>
     {% endif %}
     </center>
     </div>
