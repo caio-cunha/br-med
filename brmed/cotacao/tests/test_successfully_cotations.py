@@ -139,5 +139,34 @@ class CotacaoTest(TestCase):
         # Check if CSRF token is set in HTML
         self.assertContains(response, 'csrfmiddlewaretoken')
 
+    def test_successfully_get_all(self):
+        """
+        POST /apis/cotacao/getall
+        successfully get data from database
+        """
+
+        # -------------------------------------------
+        # Create the request url
+        request_url = "/apis/cotacao/getall"
+
+        # -------------------------------------------
+        # Simulate a http call to the /apis/cotacao/getall endpoint
+        response = self.client.get(
+            request_url,
+        )
+
+        # -------------------------------------------
+        # Evaluates the status code response
+        AssertThat(response.status_code).IsEqualTo(200)
+
+        # -------------------------------------------
+        # Convert the response body back to dict
+        response_data = json.loads(response.content)
+
+        # -------------------------------------------
+        # Evaluates if the cotation saved in setUp was returned by API
+        cotacao = Cotacao.objects.filter(date=self.cotacao.date).first()
+
+        AssertThat(response_data[0]["id"]).IsAnyOf(cotacao.id)
 
         
