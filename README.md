@@ -23,7 +23,7 @@ API endpoints desenvolvidos:
  git clone https://github.com/caio-cunha/br-med.git
  ```
  
-**4. Instalar dependências (entrar na pasta do projeto baixado):**
+**4. Instalar dependências (entrar na pasta brmed/br-med):**
  ```
  python3 -m pip install -r requirements.txt
  ```
