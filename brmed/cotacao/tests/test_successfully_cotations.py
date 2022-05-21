@@ -101,7 +101,7 @@ class CotacaoTest(TestCase):
 
         # -------------------------------------------
         # Create the request url
-        request_url = "/apis/cotacao/chart/date/"
+        request_url = "/apis/cotacao/chart/date"
 
         context = {'date_initial': '2022-05-21', 'date_final': '2022-05-21'}
 
