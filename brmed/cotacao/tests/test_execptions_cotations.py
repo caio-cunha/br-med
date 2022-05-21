@@ -60,7 +60,7 @@ class CotacaoTest(TestCase):
     def test_not_found_chart_date(self):
         """
         POST /apis/cotacao/chart/date:
-        405 Method not Allow - Exception Test
+        404 Not Found ERROR - Exception Test
         """
 
         # -------------------------------------------
