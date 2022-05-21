@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-@my2a3x*ey=r-((gngtbgpf1x-dh7)d4ve0uzvu7kr$y#(k&cg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -85,8 +85,12 @@ WSGI_APPLICATION = 'brmed.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(BASE_DIR / 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'brmed',
+        'USER': 'caio',
+        'PASSWORD': 'caio123',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
