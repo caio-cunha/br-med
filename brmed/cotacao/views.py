@@ -14,7 +14,7 @@ class CotacaoView(APIView):
             A View for get data in VAT endpoint and put in database local
         """
         cotacao_service = CotacaoService()
-        message = cotacao_service.seed_initial()
+        message = cotacao_service.seed()
         return Response(message)
 
     @api_view(['GET'])

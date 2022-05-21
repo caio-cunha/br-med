@@ -74,7 +74,7 @@ class CotacaoService():
         return data_dict
 
     
-    def seed_initial(self):
+    def seed(self):
         """
         A service seed database with 5 response of VAT ENDPOINT 
 
