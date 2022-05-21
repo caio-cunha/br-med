@@ -115,7 +115,7 @@ class CotacaoService():
                 - : None
 
             Returns:  \n  
-                datas_final : data of cotations and errors 
+                datas_final : data of cotations from database or errors 
 
         """
         datas_final = {'dates': [], 'real': [], 'euro': [], 'iene': [], 'errors': ''}
@@ -152,7 +152,7 @@ class CotacaoService():
                 date_final: Date Final for generate chart
 
             Returns:  \n  
-                datas_final : data of cotations and errors
+                datas_final : data of cotations or errors
         """
         
         datas_final = {'dates': [], 'real': [], 'euro': [], 'iene': [], 'errors': ''}
