@@ -1,4 +1,6 @@
 import json
+from multiprocessing import context
+from sqlite3 import Date
 from unittest.mock import patch
 from cotacao.models import Cotacao
 from cotacao.forms import DateForm
@@ -75,7 +77,7 @@ class CotacaoTest(TestCase):
         # -------------------------------------------
         # Evaluates if cotation sabe in SetUp was returned by this endpoint
         cotacao = Cotacao.objects.filter(date=self.cotacao.date).first()
-        date_str = cotacao.date.strftime("%Y-%m-%d")]
+        date_str = cotacao.date.strftime("%Y-%m-%d")
         AssertThat(date_str).IsEqualTo(response.context['dates'][0])
 
         # -------------------------------------------
@@ -91,7 +93,51 @@ class CotacaoTest(TestCase):
         # Check if CSRF token is set in HTML
         self.assertContains(response, 'csrfmiddlewaretoken')
 
-       
+    def test_successfully_chart_date(self):
+        """
+        POST /apis/cotacao/chart/date
+        successfully get data from database with date selected by user
+        """
+
+        # -------------------------------------------
+        # Create the request url
+        request_url = "/apis/cotacao/chart/date/"
+
+        context = {'date_initial': '2022-05-21', 'date_final': '2022-05-21'}
+
+        # -------------------------------------------
+        # Simulate a http call to the /apis/cotacao/chart/date endpoint
+        response = self.client.post(
+            request_url,
+            data=context
+        )
+
+        # -------------------------------------------
+        # Evaluates the status code response
+        AssertThat(response.status_code).IsEqualTo(200)
+
+        # -------------------------------------------
+        # Evaluates if cotation save in database in SetUp was returned by this endpoint
+        cotacao = Cotacao.objects.filter(date=self.cotacao.date).first()
+        date_str = cotacao.date.strftime("%Y-%m-%d")
+
+        AssertThat(date_str).IsEqualTo(response.context['dates'][0])
+        AssertThat(self.cotacao.real).IsEqualTo(response.context['real'][0])
+        AssertThat(self.cotacao.euro).IsEqualTo(response.context['euro'][0])
+        AssertThat(self.cotacao.iene).IsEqualTo(response.context['iene'][0])
+
+        # -------------------------------------------
+        # Check if Template is Used
+        self.assertTemplateUsed(response, 'index.html')
+
+        # -------------------------------------------
+        # Check if HTML has some tags
+        self.assertContains(response, '<form')
+        self.assertContains(response, 'type="date"',2)
+
+        # -------------------------------------------
+        # Check if CSRF token is set in HTML
+        self.assertContains(response, 'csrfmiddlewaretoken')
 
 
         
