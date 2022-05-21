@@ -93,6 +93,18 @@
             },
             opposite: true
         }],
+        plotOptions: {
+            series: {
+                events: {
+                    legendItemClick: function () {
+                        var visibility = this.visible ? 'mostrar' : 'ocultar ';
+                        if (!confirm('Você quer mesmo mudar isso?')) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        },
         series: [{
             name: 'Real (BRL)',
             data: _datareal,
