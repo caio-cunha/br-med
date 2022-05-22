@@ -10,23 +10,47 @@ API endpoints desenvolvidos:
 > Obter 5 cotações na API vatcomply e persisti-las no banco de dados
 
 ```plaintext
-METHOD /apis/cotacao/seed
+GET /apis/cotacao/seed
 ```
 
-Example request:
+Exemplo da requisição:
 
 ```shell
 curl "https://test-br-med.herokuapp.com/apis/cotacao/seed"
 ```
 
-> Gerar gráfico com as últimas 5 cotações salvas no banco de dados.
+> Gerar gráfico com as cotações (apenas 5) mais recentes salvas no banco de dados.
 
 ```plaintext
-METHOD /apis/cotacao/chart
+GET /apis/cotacao/chart
 ```
 
-Example request:
+Exemplo da requisição:
 
 ```shell
 curl "https://test-br-med.herokuapp.com/apis/cotacao/chart"
+```
+
+> Gerar gráfico com as cotações (apenas 5) salvas no banco de dados, utilizando o intervalo de data selecionado pelo usuário.
+
+```plaintext
+POST /apis/cotacao/date
+```
+
+Exemplo da requisição:
+
+```shell
+curl -X POST "https://test-br-med.herokuapp.com/apis/cotacao/chart/date"
+```
+
+> Obter todas as cotações salvas no banco de dados
+
+```plaintext
+GET /apis/cotacao/getall
+```
+
+Exemplo da requisição:
+
+```shell
+curl "https://test-br-med.herokuapp.com/apis/cotacao/getall"
 ```
