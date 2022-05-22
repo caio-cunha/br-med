@@ -26,11 +26,7 @@ https://test-br-med.herokuapp.com/
 Database
 
 ``` Database
-Host: ec2-34-231-177-125.compute-1.amazonaws.com
-Database: d94bkr682h2l3d
-User: ojeiplazgwtvfz
-Port: 5432
-Password: 3d7f8a2625bf26a92121fb2dbcc0d8bae9b76e3a2f28edcd1e03fba7246f0534
+Em e-mail enviado para Alexanda há as credenciais de acesso ao banco de dados PostgreSql
 
 ```
 
