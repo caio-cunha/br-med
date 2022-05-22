@@ -48,7 +48,7 @@ Exemplo da requisição:
 curl "https://test-br-med.herokuapp.com/apis/cotacao/seed"
 ```
 
-* obs: Execute esse endpoint PRIMEIRAMENTE para alimentar o banco de dados *
+* obs: Execute esse endpoint para alimentar o banco de dados *
 
 > Gerar gráfico com as cotações (apenas 5) mais recentes salvas no banco de dados.
 
