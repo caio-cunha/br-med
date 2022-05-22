@@ -83,3 +83,10 @@ Exemplo da requisição:
 ```shell
 curl "https://test-br-med.herokuapp.com/apis/cotacao/getall"
 ```
+## Testes
+
+Os testes foram executados com o comando:
+
+```shell
+Horuku run python3 manage.py test
+```
