@@ -127,7 +127,7 @@ class CotacaoService():
         date_final_str = date_final.strftime("%Y-%m-%d")
 
         ## get records with date range selected
-        datas = Cotacao.objects.filter(date__range=[date_inicial_str, date_final_str])
+        datas = Cotacao.objects.filter(date__range=[date_inicial_str, date_final_str]).order_by('-id')
 
         if not datas:
             datas_final['errors'] = "Nenhum dado encontrado no BANCO DE DADOS!"
@@ -172,7 +172,7 @@ class CotacaoService():
             data = self._get_save_data_api(date)
 
         ## get records with date range selected
-        datas = Cotacao.objects.filter(date__range=[date_inicial, date_final])
+        datas = Cotacao.objects.filter(date__range=[date_inicial, date_final]).order_by('-id')
 
         if not datas:
             datas_final['errors'] = "Não há dados para a data selecionada!"
