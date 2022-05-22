@@ -14,6 +14,7 @@ from pathlib import Path
 from site import venv
 import environ
 import os
+import django_heroku
 
 env = environ.Env()
 environ.Env.read_env()
@@ -138,3 +139,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 BASE_URL_ENDPOINT_VAT = env('BASE_URL_ENDPOINT_VAT')
 BASE_COTATION = env('BASE_COTATION')
+
+## django heroku lib
+django_heroku.settings(locals())
