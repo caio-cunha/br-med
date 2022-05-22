@@ -26,11 +26,11 @@ https://test-br-med.herokuapp.com/
 Database
 
 ``` Database
-Host: ec2-44-194-117-205.compute-1.amazonaws.com
-Database: d93kj2k0kc6g14
-User: suqwthdqzsxjvb
+Host: ec2-34-231-177-125.compute-1.amazonaws.com
+Database: d94bkr682h2l3d
+User: ojeiplazgwtvfz
 Port: 5432
-Password: a19005e0d0b7ca6db28a1892165b38b974089294dea8937b1411cc250b6633f9
+Password: 3d7f8a2625bf26a92121fb2dbcc0d8bae9b76e3a2f28edcd1e03fba7246f0534
 
 ```
 
