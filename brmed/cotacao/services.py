@@ -28,11 +28,10 @@ class CotacaoService():
         client = coreapi.Client()
 
         date_str = date.strftime("%Y-%m-%d")
-
         filter = Cotacao.objects.filter(date=date_str)
 
         if not filter:
-
+            
             try:
 
                 data = client.get(BASE_URL_ENDPOINT_VAT + '?base=' + BASE_COTATION + '&date=' + date_str)
@@ -43,29 +42,23 @@ class CotacaoService():
             
             data_dict = {}
 
-            if data["date"] == date_str:
+            try:
 
-                try:
+                data_dict["real"] = data["rates"]["BRL"]
+                data_dict["euro"] = data["rates"]["EUR"]
+                data_dict["iene"] = data["rates"]["JPY"]
+                data_dict["date"] = data["date"]
+                data_dict["message"] = "Dados Importados!"
 
-                    data_dict["real"] = data["rates"]["BRL"]
-                    data_dict["euro"] = data["rates"]["EUR"]
-                    data_dict["iene"] = data["rates"]["JPY"]
-                    data_dict["date"] = data["date"]
-                    data_dict["message"] = "Dados Importados!"
+            except KeyError as exp:
 
-                except KeyError as exp:
+                raise exp
 
-                    raise exp
-
-                cotacao_serializer = CotacaoSerializer(data=data_dict)
-                cotacao_serializer.is_valid(raise_exception=True)
+            cotacao_serializer = CotacaoSerializer(data=data_dict)
+            if (cotacao_serializer.is_valid()):
                 cotacao_serializer.save()
-             
-                return data_dict
             
-            else:
-                
-                data_dict = {'date': '', 'message': "Dados não importados! VAT API não retornou para essa data."}
+            return data_dict
 
         else:
             
@@ -84,24 +77,33 @@ class CotacaoService():
             Returns:  \n  
                 message: sucess message or error
         """
-        date_validation = []
         message = []
         limit = 0
         day_cont = 0
+        date_initial = datetime.datetime.today()
         
+        cotacao = Cotacao.objects.last()
+        
+        if cotacao:
+            date_initial = cotacao.date - datetime.timedelta(days=1)
+
         while (limit <= 4):
 
-            date = datetime.datetime.today() - datetime.timedelta(days=day_cont)
+            date = date_initial - datetime.timedelta(days=day_cont)
 
-            data = self._get_save_data_api(date)
+            weekday = date.weekday()
+
+            if weekday < 5:
+                
+                data = self._get_save_data_api(date)
             
-            if data["date"] not in date_validation and data["date"] != '':
+                if data["date"] != '':
 
-                date_validation.append(data["date"])
-                limit = limit + 1
+                    limit = limit + 1
 
-            date_str = date.strftime("%Y-%m-%d")
-            message.append(date_str + ': ' + data["message"])
+                date_str = date.strftime("%Y-%m-%d")
+                message.append(date_str + ': ' + data["message"])
+
             day_cont = day_cont + 1
 
         return message  
