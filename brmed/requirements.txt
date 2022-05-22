@@ -4,8 +4,10 @@ certifi==2021.10.8
 charset-normalizer==2.0.12
 coreapi==2.3.3
 coreschema==0.0.4
+dj-database-url==0.5.0
 Django==4.0.4
 django-environ==0.8.1
+django-heroku==0.3.1
 django-model-utils==4.2.0
 djangorestframework==3.13.1
 idna==3.3
@@ -20,3 +22,4 @@ six==1.16.0
 sqlparse==0.4.2
 uritemplate==4.1.1
 urllib3==1.26.9
+whitenoise==6.1.0
