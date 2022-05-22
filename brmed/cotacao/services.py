@@ -120,7 +120,7 @@ class CotacaoService():
         """
         datas_final = {'dates': [], 'real': [], 'euro': [], 'iene': [], 'errors': ''}
 
-        date_inicial = datetime.datetime.today() - datetime.timedelta(days=4)
+        date_inicial = datetime.datetime.today() - datetime.timedelta(days=6)
         date_inicial_str = date_inicial.strftime("%Y-%m-%d")
 
         date_final = datetime.datetime.today()
