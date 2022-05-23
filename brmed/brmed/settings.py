@@ -15,6 +15,7 @@ from site import venv
 import environ
 import os
 import django_heroku
+from decouple import config
 
 env = environ.Env()
 environ.Env.read_env()
@@ -27,10 +28,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@my2a3x*ey=r-((gngtbgpf1x-dh7)d4ve0uzvu7kr$y#(k&cg'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool) 
 
 ALLOWED_HOSTS = ['localhost']
 
