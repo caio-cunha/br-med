@@ -81,11 +81,6 @@ class CotacaoService():
         limit = 0
         day_cont = 0
         date_initial = datetime.datetime.today()
-        
-        cotacao = Cotacao.objects.last()
-        
-        if cotacao:
-            date_initial = cotacao.date - datetime.timedelta(days=1)
 
         while (limit <= 4):
 
@@ -128,8 +123,13 @@ class CotacaoService():
         date_final = datetime.datetime.today()
         date_final_str = date_final.strftime("%Y-%m-%d")
 
+        if date_inicial.weekday == 5:
+            date_inicial = date_inicial - datetime.timedelta(days=1)
+        elif date_inicial.weekday == 6:
+            date_inicial = date_inicial - datetime.timedelta(days=2)
+
         ## get records with date range selected
-        datas = Cotacao.objects.filter(date__range=[date_inicial_str, date_final_str]).order_by('-id')
+        datas = Cotacao.objects.filter(date__range=[date_inicial_str, date_final_str]).order_by('date')
 
         if not datas:
             datas_final['errors'] = "Nenhum dado encontrado no BANCO DE DADOS!"
